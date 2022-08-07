@@ -1,7 +1,7 @@
 # lescone
 
 Um site para um restaurante.
-Projeto realizado durante o curso de SCSS da Origamid.
+Projeto realizado durante o curso de SASS/SCSS da Origamid.
 
 ## Resumo
 Neste curso foi ensinado as principais funcionalidades de um pré-processador css, como: 

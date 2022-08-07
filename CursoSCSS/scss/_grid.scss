@@ -1,0 +1,139 @@
+//Define a quantidade de colunas do grid e o espaçamento (gap)
+$colunas: 12;
+$gap: 20px;
+
+//Define os dispositivos que serão usados (grande - tela / medio - tablet / pequeno - celular)
+$d-grande: 1200px;
+$d-medio: 760px;
+$d-pequeno: 480px;
+
+//Box-sizing - Ignora o padding existente, e considera só o que foi declarado no width
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+//Mixins (é tipo uma função) de media querie (responsividade)
+
+@mixin dispositivo($tamanho){
+    @if $tamanho == grande {
+        @media screen and (min-width: #{$d-grande}){
+            @content;
+        }
+    } @else if $tamanho == medio {
+        @media screen and (min-width: #{$d-medio}) and (max-width: #{$d-grande - 1}){
+            @content;
+        }
+    } @else if $tamanho == pequeno {
+        @media screen and (max-width: #{$d-medio - 1}){
+            @content;
+        }
+    }
+}
+
+
+// Funções do GRID 
+
+@function grid($coluna, $offset: false){
+    //Ex: grid(4) = 4 / 12 * 100 = 33%
+    $width: $coluna / $colunas * 100 + "%";
+    $resultado: calc(#{$width} - #{$gap});
+
+    @if $offset == offset {
+        $gap: $gap / 2;
+        $resultado: calc(#{$width} + #{$gap});
+    }
+    @return $resultado;
+}
+
+// Função para criar as classes de grid (parecido com o bootstrap)
+
+@for $i from 1 through $colunas {
+    .grid-#{$i}{
+        width: grid($i);
+    }
+}
+
+// Criar mixin de estrutura dos grids (atributos comuns a todos os grids)
+
+@mixin grid-estrutura {
+    float: left;
+    min-height: 1px;
+    margin-left: $gap / 2;
+    margin-right: $gap / 2;
+    @include dispositivo(pequeno){
+        width: 100%;
+        float: none;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}
+//Captura todos os elementos com o atributo 'class' que começa com 'grid-' e aplica o mixin
+[class^="grid-"]{
+    @include grid-estrutura;
+}
+
+
+// Função para criar as classes de offset
+@for $i from 1 through $colunas {
+    .offset-#{$i}{
+        margin-left: grid($i, offset);
+        @extend %offset;
+    }
+}
+
+//Define que nos celulares o offset será sempre 0
+@include dispositivo(pequeno){
+    %offset {
+        margin-left: 0px;
+    }
+}
+
+
+//Mixin de clearfix 
+@mixin clearfix {
+    &::after, &::before {
+        content: '';
+        display: table;
+        clear: both;
+    }
+}
+
+//Mixin de container
+
+@mixin container {
+    max-width: $d-grande;
+    margin: 0 auto;
+    position: relative;
+    @include dispositivo(medio) {
+        max-width: $d-medio;
+    }
+    @include dispositivo(pequeno){
+        max-width: $d-pequeno;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    @include clearfix;
+}
+
+.container {
+    @include container;
+}
+
+//Mixin de linha
+
+@mixin linha{
+    position: relative;
+    margin-left: -$gap/2;
+    margin-right: -$gap/2;
+    @include dispositivo(pequeno){
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+    @include clearfix;
+
+}
+
+.linha {
+    @include linha;
+}

@@ -12,5 +12,5 @@ E por fim, estruturas de repetições e condicionais.
 
 
 ## Resultado
-![LeScone](imagens/lescone.png "Foto representando o projeto final do curso realizado.")
+![LeScone](imagens/lescone1.png "Foto representando o projeto final do curso realizado.")
 ![LeScone](imagens/lescone2.png "Foto representando o projeto final do curso realizado.")
